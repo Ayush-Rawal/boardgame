@@ -19,7 +19,7 @@ export default function Player(name, x, y) {
 const PlayerAssetURL = ".\\Assets\\kp1\\characters\\knight_16x16-spritesheet_no-bkg_char-set-1.png"
 const playerSprite = new Image()
 playerSprite.src = PlayerAssetURL
-Player.prototype.sprite = playerSprite
+Player.sprite = playerSprite
 
 Player.prototype.move = function ({direction, magnitude}) {
 	switch(direction) {
