@@ -21,7 +21,7 @@ const playerSprite = new Image()
 playerSprite.src = PlayerAssetURL
 Player.sprite = playerSprite
 
-Player.prototype.move = function ({direction, magnitude}) {
+Player.prototype.move = function (direction, magnitude) {
 	switch(direction) {
 		case 'DOWN':
 			this.pos.y += magnitude
