@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Ayush-Rawal/boardgame/issues"
   },
-  "homepage": "https://github.com/Ayush-Rawal/boardgame#readme"
+  "homepage": "https://github.com/Ayush-Rawal/boardgame#readme",
+  "dependencies": {
+    "keymaster": "^1.6.2"
+  }
 }
