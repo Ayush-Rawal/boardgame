@@ -24,3 +24,7 @@ Board.prototype.render = function (ctx) {
 		})
 	})
 }
+
+Board.prototype.getAvailableMoves = function (playerX, playerY) {
+
+}
