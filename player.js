@@ -2,6 +2,9 @@ import Weapon from './weapon.js'
 /**
  * Represents a player.
  * @constructor
+ * @param (string) name - Name of the Player
+ * @param (number) x - X coordinate of player position
+ * @param (number) y - Y coordinate of player position
  */
 export default function Player(name, x, y) {
 	this.name = name
