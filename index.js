@@ -2,7 +2,7 @@ import Game from "./game.js"
 import onKey from './node_modules/keymaster/keymaster.js'
 
 let game = new Game()
-const canvasWidth = 600, canvasHeight = 600
+const canvasWidth = 300, canvasHeight = 300
 var canvas = document.querySelector('#primaryCanvas')
 canvas.width = canvasWidth
 canvas.height = canvasHeight
