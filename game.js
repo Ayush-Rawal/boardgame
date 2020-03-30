@@ -1,5 +1,5 @@
-import Board from './board'
-import Player from './player'
+import Board from './board.js'
+import Player from './player.js'
 
 export default function Game (sizeX, sizeY, numPlayers = 2) {
 	this.board = new Board(
