@@ -51,3 +51,9 @@ Player.prototype.render = function (ctx) {
 	// TODO: change 0,0 to set dynamically acc to current frame
 	ctx.drawImage(this.sprite, 0, 0, frameX, frameY, x, y, frameX, frameY)
 }
+
+Player.prototype.showDamage(damage) {
+	// TODO
+	// Note: show rounded damage to avoid showing things like damaged by 33.333333
+	console.log(`Player damaged by ${damage}`)
+}
