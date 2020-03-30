@@ -63,7 +63,7 @@ Player.prototype.render = function (ctx) {
 	ctx.drawImage(this.sprite, 0, 0, frameX, frameY, x, y, frameX, frameY)
 }
 
-Player.prototype.showDamage(damage) {
+Player.prototype.showDamage = function (damage) {
 	// TODO
 	// Note: show rounded damage to avoid showing things like damaged by 33.333333
 	console.log(`Player damaged by ${damage}`)
