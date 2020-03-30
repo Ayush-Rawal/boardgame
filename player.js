@@ -16,7 +16,7 @@ export default function Player(name, x, y) {
 	this.pos = { x: x, y: y }
 }
 
-const PlayerAssetURL = ".\\Assets\\kp1\\characters\\knight_16x16-spritesheet_no-bkg_char-set-1.png"
+const PlayerAssetURL = "./assets/kp1/characters/knight_16x16-spritesheet_no-bkg_char-set-1.png"
 const playerSprite = new Image()
 playerSprite.src = PlayerAssetURL
 Player.sprite = playerSprite
