@@ -1,4 +1,5 @@
 import Game from "./game.js"
+import onKey from './node_modules/keymaster/keymaster.js'
 
 let game = new Game()
 const canvasWidth = 600, canvasHeight = 600
@@ -17,3 +18,5 @@ let interval = setInterval(() => {
 	})
 }, 1000/16);
 // }
+
+onKey('ctrl+c', () => clearInterval(interval)) 
