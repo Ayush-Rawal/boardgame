@@ -16,3 +16,8 @@ export default function Game (sizeX, sizeY, numPlayers = 2) {
 	this.score = new Array(numPlayers)
 	this.gameTime = 0
 }
+
+Game.prototype.render = function (ctx) {
+	this.board.render(ctx)
+	this.players.forEach(player => player.render(ctx))
+}
