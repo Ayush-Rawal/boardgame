@@ -46,6 +46,11 @@ Player.prototype.attack = function (opponent) {
 	this.weapon.animate()
 	opponent.showDamage(actualDamage)
 }
+
+Player.prototype.defend = function () {
+	// TODO: End extra armor at end of turn
+	// Note: Add a status mechanism that takes care of status effects ending at diff turns
+	this.armor = 0.5
 }
 
 Player.prototype.render = function (ctx) {
