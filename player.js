@@ -40,9 +40,12 @@ Player.prototype.move = function ({direction, magnitude}) {
 	}
 }
 
-Player.prototype.attack = function (player) {
-	player.hp -= this.weapon.damage * player.armor
-	// TODO: Animate weapon sprite animation
+Player.prototype.attack = function (opponent) {
+	let actualDamage = this.weapon.damage * opponent.armor
+	opponent.hp -= actualDamage
+	this.weapon.animate()
+	opponent.showDamage(actualDamage)
+}
 }
 
 Player.prototype.render = function (ctx) {
