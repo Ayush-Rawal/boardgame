@@ -25,3 +25,9 @@ let interval = setInterval(() => {
 // }
 
 onKey('ctrl+c', () => clearInterval(interval)) 
+
+// TODO: board shouldn't be exported from index, index should not be concerned with inner working of the game
+let board = game.board
+export {
+	board
+}
