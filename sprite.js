@@ -21,12 +21,14 @@ export default function Sprite(uri, srcX, srcY, frameW, frameH) {
  * @param (object) ctx - 2D canvas context to render sprite
  * @param (number) destX - X coordinate where to render the sprite
  * @param (number) destY - Y coordinate where to render the sprite
+ * @param (number) [destW = frameW] - Width of rendered image
+ * @param (number) [destH = frameH] - Height of rendered image
  */
-Sprite.prototype.render = function (ctx, destX, destY) {
+Sprite.prototype.render = function (ctx, destX, destY, destW, destH) {
 	ctx.drawImage(
 		this.image,
 		this.srcX * this.frameW, this.srcY * this.frameH, this.frameW, this.frameH,
-		destX, destY, this.frameW, this.frameH
+		destX, destY, destW || this.frameW, destH || this.frameH
 	)
 }
 
