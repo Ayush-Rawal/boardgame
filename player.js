@@ -1,4 +1,7 @@
 import Weapon from './weapon.js'
+import Sprite from './sprite.js'
+import {board} from "./index.js"
+
 /**
  * Represents a player.
  * @constructor
@@ -9,20 +12,12 @@ import Weapon from './weapon.js'
 export default function Player(name, x, y) {
 	this.name = name
 	this.hp = 400
-	this.weapon = new Weapon()
+	this.weapon = new Weapon(0)
 	this.armor = 0
-	this.renderData = {
-		currentFrame: 0,
-		frameX: 16,
-		frameY: 16
-	}
 	this.pos = { x: x, y: y }
+	console.log("Player created", this.pos)
+	this.sprite = new Sprite("./assets/kp1/characters/knight_16x16-spritesheet_no-bkg_char-set-1.png", 0, 0, 16, 16)
 }
-
-const PlayerAssetURL = "./assets/kp1/characters/knight_16x16-spritesheet_no-bkg_char-set-1.png"
-const playerSprite = new Image()
-playerSprite.src = PlayerAssetURL
-Player.prototype.sprite = playerSprite
 
 /**
  * Move player on the board
@@ -30,21 +25,34 @@ Player.prototype.sprite = playerSprite
  * @param (number) magnitude - number of positions to move
  */
 Player.prototype.move = function (direction, magnitude) {
+	console.log("Move called")
+	let destX = this.pos.x, destY = this.pos.y
 	switch(direction) {
 		case 'DOWN':
-			this.pos.y += magnitude
+			destY += magnitude
 			break;
 		case 'RIGHT':
-			this.pos.x += magnitude
+			destX += magnitude
 			break;
 		case 'UP':
-			this.pos.y -= magnitude
+			destY -= magnitude
 			break;
 		case 'LEFT':
-			this.pos.x -= magnitude
+			destX -= magnitude
 			break;
 		default:
 			throw new Error("Invalid direction")
+	}
+	console.log({x: this.pos.x, y: this.pos.y}, {x: destX, y: destY})
+	try {
+		board.movePlayer({x: this.pos.x, y: this.pos.y}, {x: destX, y: destY})
+		console.log(this)
+		this.pos.x = destX
+		this.pos.y = destY
+		console.log(this.pos)
+	} catch(e) {
+		console.error(e)
+		throw new Error("Incorrect move")
 	}
 }
 
@@ -72,11 +80,15 @@ Player.prototype.defend = function () {
  * Render Player
  * @param (object) ctx - 2D canvas context for rendering
  */
-Player.prototype.render = function (ctx) {
-	let {frameX, frameY} = this.renderData
-	let {x, y} = this.pos
-	// TODO: change 0,0 to set dynamically acc to current frame
-	ctx.drawImage(this.sprite, 0, 0, frameX, frameY, x, y, frameX, frameY)
+Player.prototype.render = function (ctx, pos) {
+	let {x, y} = pos
+	// center player
+	// TODO: Replace magic number with const in config
+	x = x - 8
+	y = y - 8
+	this.sprite.render(ctx, x, y)
+	this.weapon.render(ctx, {x, y}, 16, 16)
+	// TODO: Add offsets to weapons
 }
 
 /**
@@ -89,4 +101,10 @@ Player.prototype.showDamage = function (damage) {
 	console.log(`Player damaged by ${damage}`)
 }
 
-(url = "D:/Projects/Boardgame/assets/#2 - Transparent & Drop Shadow.png", srcX = 1, srcY = 5, frameW = 32, frameH = 32)
+// Player.actionHandler()
+
+Player.prototype.actionHandler = function () {
+	let hasMoved = false
+	let moveDirection = null
+	
+}
