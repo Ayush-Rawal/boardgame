@@ -1,18 +1,22 @@
+import config from "./config.js"
+import Sprite from "./sprite.js"
+
 /**
  * Represents a weapon.
  * @constructor
- * @param (Sprite) sprite - weapon sprite
- * @param (number) [damage=40] - damage done per hit
+ * @param (number) [index] - index of weapon in weapon config
 */
-export default function Weapon(sprite, damage = 40) {
-	this.damage = damage
-	this.sprite = sprite
+export default function Weapon(index) {
+	let weapon = config.weapons[index]
+	let sprite = weapon.sprite
+	let weaponSprite = new Sprite(sprite.uri, sprite.srcX, sprite.srcY, sprite.frameW, sprite.frameH)
+	this.damage = weapon.damage
+	this.sprite = weaponSprite
+	this.offset = weapon.offset
 }
 
 /**
  * Animate the weapon sprite.
- * @param (number) damage - damage done per hit
- * @param (Sprite) sprite - weapon sprite
 */
 Weapon.prototype.animate = function() {
 	console.log("Smash Smash!!")
@@ -25,6 +29,7 @@ Weapon.prototype.animate = function() {
  * @param (number) destX - X coordinate at which to render the sprite
  * @param (number) destXY - Y coordinate at which to render the sprite
 */
-Weapon.prototype.render = function (ctx, destX, destY, destW, destH) {
-	this.sprite.render(ctx, destX, destY, destW, destH)
+Weapon.prototype.render = function (ctx, dest, destW, destH) {
+	this.sprite.render(ctx, dest.x + this.offset.x, dest.y + this.offset.y, destW, destH)
+	// this.sprite.render(ctx, dest.x , dest.y, destW, destH)
 }
