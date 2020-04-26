@@ -31,11 +31,11 @@ Tile.prototype.contains = function (blueprint) {
 /**
  * Render tile and contained object
  * @param (object) ctx - 2D canvas context for rendering
- * @param (number) posX - x (row) index of the tile
- * @param (number) posY - y (column) index of the tile
+ * @param (object) pos - position for rendering
+ * @param (number) pos.x - x coordinate of position for rendering
+ * @param (number) pos.y - y coordinate of position for rendering
  */
 Tile.prototype.render = function(ctx, pos) {
-	
 	// ! Temporary highlighting workaround
 	if (this.isHighlighted && this.contains(null)) {
 		this.grassSprite.render(ctx, pos.x * this.sprite.frameW, pos.y * this.sprite.frameH)

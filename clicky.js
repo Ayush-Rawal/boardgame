@@ -6,10 +6,14 @@ let canvas = document.querySelector('canvas')
 let tileHeight = config.board.sprite.frameH
 let tileWidth = config.board.sprite.frameW
 
+// TODO: Wrap into a singleton for cleaner code and eliminating global var clickys
+
 let clickys = []
 
-canvas.addEventListener('click', clickHandler)
-
+/**
+ * Responds to click on canvas and calls appropriate handler for tile/region clicked
+ * @param {object} event event object 
+ */
 function clickHandler(event) {
 	let clickX = event.pageX - canvas.offsetLeft
 	let clickY = event.pageY - canvas.offsetTop
@@ -22,6 +26,15 @@ function clickHandler(event) {
 	})
 }
 
+canvas.addEventListener('click', clickHandler)
+
+/**
+ * 
+ * @param {object} pos - position of tile (in tile indexes) to attach click event to
+ * @param {*} callback - function to call on click
+ * @param {number} pos.x - x coordinate of position
+ * @param {number} pos.y - y coordinate of position
+ */
 function onClick(pos, callback) {
 	clickys.push({
 		pos,

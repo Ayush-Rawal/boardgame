@@ -6,12 +6,11 @@ import Weapon from './weapon.js'
 import Sprite from './sprite.js'
 import Consumable from './consumable.js'
 
-export default function Game (sizeX, sizeY, numPlayers = 2) {
-	this.board = new Board(
-		sizeX,
-		sizeY
-	)
-	this.players = initalizePlayers(numPlayers, this.board) 
+/**
+ * Represents the game
+ * @constructor
+ * @param {number} [numPlayers=2] - number of players in the game
+ */
 	this.playerWithTurn = 0
 	this.rounds = 0
 	this.isGameOver = false
@@ -27,13 +26,19 @@ export default function Game (sizeX, sizeY, numPlayers = 2) {
 	onKey('T', () => this.playerWithTurn = (this.playerWithTurn + 1) % numPlayers)
 }
 
+/**
+ * Render tile and contained object
+ * @param (object) ctx - 2D canvas context for rendering
+ */
 Game.prototype.render = function (ctx) {
 	this.board.highlightAvailableMoves(this.players[this.playerWithTurn].pos)
 	this.board.render(ctx)
 	this.board.clearHighlights()
 }
 
-function initalizePlayers(numPlayers, board) {
+/**
+ * Initialize players randomly across the board
+ */
 	// Initialize players and their position on the board depending on board size and number of players
 	// TODO: Position players on board
 	let players = []
@@ -46,6 +51,9 @@ function initalizePlayers(numPlayers, board) {
 	return players
 }
 
+/**
+ * Initialize loot (weapons and consumables) randomly across the board
+ */
 Game.prototype.initializeLoot = function() {
 	let board = this.board.board
 	spawnObjects(board, Math.min(this.players.length, 4), config.weapons, Weapon)
@@ -53,6 +61,13 @@ Game.prototype.initializeLoot = function() {
 	
 }
 
+/**
+ * Create a object randomly selected from a list on a random unoccupied tile
+ * @param {Object} board - Game board
+ * @param {number} numObjects - number of objects to spawn 
+ * @param {Object[]} objects - list of object configs
+ * @param {*} Constuctor - Constructor for object to spawn
+ */
 function spawnObjects (board, numObjects, objects, Constuctor) {
 	for(let i = 0; i < numObjects; i++) {
 		let {x, y} = findRandomUnoccupiedTile(board)
