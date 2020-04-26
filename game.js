@@ -50,7 +50,7 @@ Game.prototype.initalizePlayers = function () {
 	let players = []
 	let board = this.board.board
 	for (let i = 0; i < this.numPlayers; i++) {
-		let {x, y} = findRandomUnoccupiedTile(board)
+		let {x, y} = this.board.findRandomUnoccupiedTile()
 		let player = new Player(`Player ${i}`, {x, y})
 		players.push(player)
 		board[x][y].entity = player
@@ -62,9 +62,8 @@ Game.prototype.initalizePlayers = function () {
  * Initialize loot (weapons and consumables) randomly across the board
  */
 Game.prototype.initializeLoot = function() {
-	let board = this.board.board
-	spawnObjects(board, Math.min(this.numPlayers, 4), config.weapons, Weapon)
-	spawnObjects(board, this.numPlayers, config.consumables, Consumable)
+	spawnObjects(this.board, Math.min(this.numPlayers, 4), config.weapons, Weapon)
+	spawnObjects(this.board, this.numPlayers, config.consumables, Consumable)
 }
 
 /**
@@ -76,23 +75,9 @@ Game.prototype.initializeLoot = function() {
  */
 function spawnObjects (board, numObjects, objects, Constuctor) {
 	for(let i = 0; i < numObjects; i++) {
-		let {x, y} = findRandomUnoccupiedTile(board)
+		let {x, y} = board.findRandomUnoccupiedTile()
 		let randomIndex = Math.floor(Math.random() * objects.length)
 		let entity = new Constuctor(randomIndex)
-		board[x][y].entity = entity
-	}
-}
-
-function findRandomUnoccupiedTile(board) {
-	let randomX = Math.floor(Math.random() * board.length)
-	let randomY = Math.floor(Math.random() * board[0].length)
-	while(!board[randomX][randomY].contains(null)) {
-		// keep finding random tile until unoccupied one is found
-		randomX = Math.floor(Math.random() * board.length)
-		randomY = Math.floor(Math.random() * board[0].length)
-	}
-	return {
-		x: randomX,
-		y: randomY
+		board.board[x][y].entity = entity
 	}
 }

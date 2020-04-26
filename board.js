@@ -53,6 +53,20 @@ Board.prototype.clearHighlights = function () {
 	})
 }
 
+Board.prototype.findRandomUnoccupiedTile = function() {
+	let randomX = Math.floor(Math.random() * this.board.length)
+	let randomY = Math.floor(Math.random() * this.board[0].length)
+	while(!this.board[randomX][randomY].contains(null)) {
+		// keep finding random tile until unoccupied one is found
+		randomX = Math.floor(Math.random() * this.board.length)
+		randomY = Math.floor(Math.random() * this.board[0].length)
+	}
+	return {
+		x: randomX,
+		y: randomY
+	}
+}
+
 
 /**
  * highlight available movements for player
