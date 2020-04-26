@@ -7,8 +7,10 @@ export default  {
 			frameW: 32,
 			frameH: 32
 		},
-		sizeX: 8,
-		sizeY: 8
+		size: {
+			width: 8,
+			height: 8
+		}
 	},
 	players: [{
 		sprite: {}

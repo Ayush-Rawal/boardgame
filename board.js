@@ -7,13 +7,14 @@ import Consumable from "./consumable.js"
 /**
  * Represents the game board.
  * @constructor
- * @param {number} [sizeX=4] - Width of the board
- * @param {number} [sizeY=4] - Length of the board.
+ * @param {object} [size] - Size (width and height in tiles) of the board
+ * @param {number} size.x - Width in tiles of the board
+ * @param {number} size.y - Height in tiles of the board
  */
-export default function Board(sizeX = 4, sizeY = 4) {
-	let board = new Array(sizeX).fill(null)
+export default function Board(size = {x: 8, y: 8}) {
+	let board = new Array(size.x).fill(null)
 	
-	this.board = board.map(_ => new Array(sizeY).fill(null).map(_ => new Tile()))
+	this.board = board.map(_ => new Array(size.y).fill(null).map(_ => new Tile()))
 	this.board.forEach((row, i) => {
 		row.forEach((tile, j) => {
 			onClick({x: i, y: j}, ()  => console.log("Click on tile at", i, j))
@@ -56,6 +57,9 @@ Board.prototype.clearHighlights = function () {
 /**
  * highlight available movements for player
  * @param (TilePosition) playerPos - tile position of player
+ * @param (number) playerPos.x - x coordinate of position for rendering
+ * @param (number) playerPos.y - y coordinate of position for rendering
+
  */
 Board.prototype.highlightAvailableMoves = function (playerPos) {
 	const maxMoves = 3

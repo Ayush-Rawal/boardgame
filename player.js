@@ -6,15 +6,16 @@ import {board} from "./index.js"
  * Represents a player.
  * @constructor
  * @param (string) name - Name of the Player
- * @param (number) x - X coordinate of player position
- * @param (number) y - Y coordinate of player position
+ * @param (object) pos - position for rendering
+ * @param (number) pos.x - x coordinate of position for rendering
+ * @param (number) pos.y - y coordinate of position for rendering
  */
-export default function Player(name, x, y) {
+export default function Player(name, pos) {
 	this.name = name
 	this.hp = 400
 	this.weapon = new Weapon(0)
 	this.armor = 0
-	this.pos = { x: x, y: y }
+	this.pos = pos
 	console.log("Player created", this.pos)
 	this.sprite = new Sprite("./assets/kp1/characters/knight_16x16-spritesheet_no-bkg_char-set-1.png", 0, 0, 16, 16)
 }
@@ -26,29 +27,28 @@ export default function Player(name, x, y) {
  */
 Player.prototype.move = function (direction, magnitude) {
 	console.log("Move called")
-	let destX = this.pos.x, destY = this.pos.y
+	let dest = this.pos
 	switch(direction) {
 		case 'DOWN':
-			destY += magnitude
+			dest.y += magnitude
 			break;
 		case 'RIGHT':
-			destX += magnitude
+			dest.x += magnitude
 			break;
 		case 'UP':
-			destY -= magnitude
+			dest.y -= magnitude
 			break;
 		case 'LEFT':
-			destX -= magnitude
+			dest.x -= magnitude
 			break;
 		default:
 			throw new Error("Invalid direction")
 	}
-	console.log({x: this.pos.x, y: this.pos.y}, {x: destX, y: destY})
+	console.log("Moving ", this.pos, dest)
 	try {
-		board.movePlayer({x: this.pos.x, y: this.pos.y}, {x: destX, y: destY})
+		board.movePlayer(this.pos, dest)
 		console.log(this)
-		this.pos.x = destX
-		this.pos.y = destY
+		this.pos = dest
 		console.log(this.pos)
 	} catch(e) {
 		console.error(e)
@@ -79,6 +79,9 @@ Player.prototype.defend = function () {
 /**
  * Render Player
  * @param (object) ctx - 2D canvas context for rendering
+ * @param (object) pos - position for rendering
+ * @param (number) pos.x - x coordinate of position for rendering
+ * @param (number) pos.y - y coordinate of position for rendering
  */
 Player.prototype.render = function (ctx, pos) {
 	let {x, y} = pos
