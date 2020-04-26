@@ -11,6 +11,11 @@ import Consumable from './consumable.js'
  * @constructor
  * @param {number} [numPlayers=2] - number of players in the game
  */
+export default function Game (numPlayers = 2) {
+	let {size} = config.board
+	this.board = new Board({x: size.width, y: size.height})
+	this.numPlayers = numPlayers
+	this.players = this.initalizePlayers() 
 	this.playerWithTurn = 0
 	this.rounds = 0
 	this.isGameOver = false
@@ -39,14 +44,16 @@ Game.prototype.render = function (ctx) {
 /**
  * Initialize players randomly across the board
  */
+Game.prototype.initalizePlayers = function () {
 	// Initialize players and their position on the board depending on board size and number of players
 	// TODO: Position players on board
 	let players = []
-	for (let i = 0; i < numPlayers; i++) {
-		let {x, y} = findRandomUnoccupiedTile(board.board)
-		let player = new Player(`Player ${i}`, x, y)
+	let board = this.board.board
+	for (let i = 0; i < this.numPlayers; i++) {
+		let {x, y} = findRandomUnoccupiedTile(board)
+		let player = new Player(`Player ${i}`, {x, y})
 		players.push(player)
-		board.board[x][y].entity = player
+		board[x][y].entity = player
 	}
 	return players
 }
@@ -56,9 +63,8 @@ Game.prototype.render = function (ctx) {
  */
 Game.prototype.initializeLoot = function() {
 	let board = this.board.board
-	spawnObjects(board, Math.min(this.players.length, 4), config.weapons, Weapon)
-	spawnObjects(board, this.players.length, config.consumables, Consumable)
-	
+	spawnObjects(board, Math.min(this.numPlayers, 4), config.weapons, Weapon)
+	spawnObjects(board, this.numPlayers, config.consumables, Consumable)
 }
 
 /**

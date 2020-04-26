@@ -4,14 +4,15 @@ import config from './config.js'
 
 let canvas = document.querySelector('#primaryCanvas')
 
-let {sizeX, sizeY} = config.board
-let {frameW, frameH} = config.board.sprite
 
-canvas.width = sizeX * frameW
-canvas.height = sizeY * frameH
+let {frameW, frameH} = config.board.sprite
+let {size} = config.board
+
+canvas.width = size.width * frameW
+canvas.height = size.height * frameH
 let ctx = canvas.getContext('2d')
 
-let game = new Game(sizeX, sizeY, 2)
+let game = new Game(2)
 
 // setTimeout(() => game.isGameOver = true, 5000)
 // while(!game.isGameOver) {
