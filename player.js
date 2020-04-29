@@ -67,3 +67,10 @@ Player.prototype.showDamage = function (damage) {
 	// Note: show rounded damage to avoid showing things like damaged by 33.333333
 	console.log(`Player damaged by ${damage}`)
 }
+
+Player.prototype.swapWeapon = function(newWeapon) {
+	console.log("Weapon swapped")
+	let oldWeapon = this.weapon
+	this.weapon = newWeapon
+	return oldWeapon
+}

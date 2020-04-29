@@ -24,7 +24,6 @@ this.highlightAvailableMoves()
  * Works by forgetting previous history 
  */
 ActionHandler.prototype.reset = function (player) {
-	console.log("Resetting ActionHandler")
 	this.hasMoved = false
 	this.moveDirection = null
 	this.player = player
@@ -35,7 +34,6 @@ ActionHandler.prototype.reset = function (player) {
  * Highlight available moves to player on board
  */
 ActionHandler.prototype.highlightAvailableMoves = function () {
-	// console.log("Move Direction", this.moveDirection)
 	if(this.hasMoved) {
 		this.highlightMovesInDirection(this.moveDirection)
 	} else {
@@ -52,12 +50,27 @@ ActionHandler.prototype.highlightAvailableMoves = function () {
  * @param (number) magnitude - number of positions to move
  */
 ActionHandler.prototype.move = function (direction, magnitude) {
-	if((this.hasMoved && direction !== this.moveDirection) || this.numMoves + magnitude > config.game.maxMoves) {
-		return null
+	if (this.hasMoved && direction !== this.moveDirection) {
+		return null // player tries to move in another direction after starting movement in one direction
 	}
+	if (this.numMoves + magnitude > config.game.maxMoves) {
+		return null // Player tries to move more than the max number of moves in a turn
+	}
+	// if (
+	//  (direction === "RIGHT" || direction === "LEFT") &&
+	//  (this.player.pos.x + magnitude >= this.board.board.length || this.player.pos.x + magnitude < 0)
+	// ) {
+	// 	return null
+	// }
+	// if (
+	//  (direction === "DOWN" || direction === "UP") &&
+	//  (this.player.pos.y + magnitude >= this.board.board[0].length || this.player.pos.y + magnitude < 0)
+	// ) {
+	// 	return null
+	// }
 	this.board.clearHighlights()
 	let dest = Object.assign({}, this.player.pos)
-	console.log("Player pos before switch ", this.player.pos)
+	// console.log("Player pos before switch ", this.player.pos)
 	switch(direction) {
 		case 'UP':
 			this.hasMoved = true
@@ -87,11 +100,21 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 			throw new Error("Invalid direction")
 	}
 	try {
-		console.log("Deep reference" + this.player.pos == dest? " confirmed" : " not there")
-		console.log("Player pos ", this.player.pos, " dest ", dest)
-		this.board.movePlayer(this.player.pos, dest)
-		this.player.pos = dest
-		console.log(this.player.pos)
+		if(this.board.board[dest.x] && this.board.board[dest.x][dest.y]) {
+			let oldWeapon = null
+			if(this.board.board[dest.x][dest.y].contains(Weapon)) {
+				let newWeapon = this.board.board[dest.x][dest.y].entity
+				oldWeapon = this.player.swapWeapon(newWeapon)
+			}
+			this.board.moveObject(this.player.pos, dest)
+			let oldPos = Object.assign({}, this.player.pos)
+			this.player.pos = dest
+			if(oldWeapon) {
+				this.board.placeObject(oldWeapon, oldPos)			
+			}
+		} else {
+			return null
+		}
 	} catch(e) {
 		console.error(e)
 		throw new Error("Incorrect move")

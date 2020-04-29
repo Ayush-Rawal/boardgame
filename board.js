@@ -28,7 +28,7 @@ Board.prototype.render = function (ctx) {
 	})
 }
 
-Board.prototype.movePlayer = function (src, dest) {
+Board.prototype.moveObject = function (src, dest) {
 	// console.log("Board moving player", src, dest)
 	if(this.board[dest.x] && this.board[dest.x][dest.y]) {
 		this.board[dest.x][dest.y].entity = this.board[src.x][src.y].entity
@@ -36,6 +36,14 @@ Board.prototype.movePlayer = function (src, dest) {
 	} else {
 		console.warn("Invalid move to dest", dest, src)
 		throw("Invalid Move")
+	}
+}
+
+Board.prototype.placeObject = function (entity, dest) {
+	if(this.board[dest.x] && this.board[dest.x][dest.y]) {
+		this.board[dest.x][dest.y].entity = entity
+	} else {
+		throw("Invalid dest passed to Board.placeObject", dest)
 	}
 }
 
