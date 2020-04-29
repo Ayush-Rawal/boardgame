@@ -74,3 +74,12 @@ Player.prototype.swapWeapon = function(newWeapon) {
 	this.weapon = newWeapon
 	return oldWeapon
 }
+
+Player.prototype.use = function(consumable) {
+	console.log("Using consumable on player")
+	console.log(this)
+	console.log(consumable)
+	this[consumable.affectedAttribute] += consumable.effect
+	console.log("After Usage")
+	console.log(this)
+}

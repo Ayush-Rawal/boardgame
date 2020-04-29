@@ -106,6 +106,11 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 				let newWeapon = this.board.board[dest.x][dest.y].entity
 				oldWeapon = this.player.swapWeapon(newWeapon)
 			}
+			if(this.board.board[dest.x][dest.y].contains(Consumable)) {
+				let consumable = this.board.board[dest.x][dest.y].entity
+				this.player.use(consumable)
+				this.board.board[dest.x][dest.y].entity = null
+			}
 			this.board.moveObject(this.player.pos, dest)
 			let oldPos = Object.assign({}, this.player.pos)
 			this.player.pos = dest
