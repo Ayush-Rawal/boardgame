@@ -31,6 +31,45 @@ export default  {
 			x: 8,
 			y: -2
 		}
+	}, {
+		sprite: {
+			uri: "./assets/Shikashi's Fantasy Icons Pack/2 - Transparent & Drop Shadow.png",
+			srcX: 5,
+			srcY: 5,
+			frameW: 32,
+			frameH: 32,
+		},
+		damage: 8,
+		offset: {
+			x: 8,
+			y: -2
+		}
+	}, {
+		sprite: {
+			uri: "./assets/Shikashi's Fantasy Icons Pack/2 - Transparent & Drop Shadow.png",
+			srcX: 11,
+			srcY: 5,
+			frameW: 32,
+			frameH: 32,
+		},
+		damage: 14,
+		offset: {
+			x: 8,
+			y: -2
+		}
+	}, {
+		sprite: {
+			uri: "./assets/Shikashi's Fantasy Icons Pack/2 - Transparent & Drop Shadow.png",
+			srcX: 13,
+			srcY: 5,
+			frameW: 32,
+			frameH: 32,
+		},
+		damage: 18,
+		offset: {
+			x: 8,
+			y: -2
+		}
 	}],
 	consumables: [{
 		name: "Elixir",
