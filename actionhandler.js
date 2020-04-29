@@ -101,6 +101,10 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 	}
 	try {
 		if(this.board.board[dest.x] && this.board.board[dest.x][dest.y]) {
+			if(this.board.board[dest.x][dest.y].contains(Player)) {
+				this.player.attack(this.board.board[dest.x][dest.y].entity)
+				return
+			}
 			let oldWeapon = null
 			if(this.board.board[dest.x][dest.y].contains(Weapon)) {
 				let newWeapon = this.board.board[dest.x][dest.y].entity

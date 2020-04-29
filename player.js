@@ -25,10 +25,13 @@ export default function Player(name, pos) {
  * @param (Player) opponent - player to attack 
  */
 Player.prototype.attack = function (opponent) {
-	let actualDamage = this.weapon.damage * opponent.armor
+	let actualDamage = this.weapon.damage * (1 - opponent.armor)
 	opponent.hp -= actualDamage
 	this.weapon.animate()
 	opponent.showDamage(actualDamage)
+	if(opponent.hp <= 0) {
+		console.log(`${opponent.name} killed`)
+	}
 }
 
 /**
