@@ -5,6 +5,7 @@ import config from "./config.js"
 import Weapon from './weapon.js'
 import Sprite from './sprite.js'
 import Consumable from './consumable.js'
+import ActionHandler from "./actionhandler.js"
 
 /**
  * Represents the game
@@ -22,13 +23,19 @@ export default function Game (numPlayers = 2) {
 	this.winner = null
 	this.score = new Array(numPlayers)
 	this.gameTime = 0
+	this.actionHandler = new ActionHandler(this.board, this.players[this.playerWithTurn])
 	this.initializeLoot()
 
-	onKey('up, W', () => this.players[this.playerWithTurn].move('UP', 1))
-	onKey('left, A', () => this.players[this.playerWithTurn].move('LEFT', 1))
-	onKey('down, S', () => this.players[this.playerWithTurn].move('DOWN', 1))
-	onKey('right, D', () => this.players[this.playerWithTurn].move('RIGHT', 1))
-	onKey('T', () => this.playerWithTurn = (this.playerWithTurn + 1) % numPlayers)
+	onKey('up, W', () => this.actionHandler.move('UP', 1))
+	onKey('left, A', () => this.actionHandler.move('LEFT', 1))
+	onKey('down, S', () => this.actionHandler.move('DOWN', 1))
+	onKey('right, D', () => this.actionHandler.move('RIGHT', 1))
+	onKey('T', () => this.changeTurn())
+}
+
+Game.prototype.changeTurn = function() {
+	this.playerWithTurn = (this.playerWithTurn + 1) % this.numPlayers
+	this.actionHandler.reset(this.players[this.playerWithTurn])
 }
 
 /**
@@ -36,9 +43,8 @@ export default function Game (numPlayers = 2) {
  * @param (object) ctx - 2D canvas context for rendering
  */
 Game.prototype.render = function (ctx) {
-	this.board.highlightAvailableMoves(this.players[this.playerWithTurn].pos)
 	this.board.render(ctx)
-	this.board.clearHighlights()
+	// this.actionHandler.render(ctx)
 }
 
 /**

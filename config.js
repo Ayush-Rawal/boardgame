@@ -1,4 +1,7 @@
 export default  {
+	game: {
+		maxMoves: 3
+	},
 	board: {
 		sprite: {
 			uri: "./assets/tiles/100x100/tiles_named_by_description/grass_biome/dirt-dual_grass_edges-bottom_end.png",

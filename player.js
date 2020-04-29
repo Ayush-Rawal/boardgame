@@ -21,42 +21,6 @@ export default function Player(name, pos) {
 }
 
 /**
- * Move player on the board
- * @param (enum) direction - direction to move in. One of "UP", "RIGHT", "DOWN", "LEFT" 
- * @param (number) magnitude - number of positions to move
- */
-Player.prototype.move = function (direction, magnitude) {
-	console.log("Move called")
-	let dest = this.pos
-	switch(direction) {
-		case 'DOWN':
-			dest.y += magnitude
-			break;
-		case 'RIGHT':
-			dest.x += magnitude
-			break;
-		case 'UP':
-			dest.y -= magnitude
-			break;
-		case 'LEFT':
-			dest.x -= magnitude
-			break;
-		default:
-			throw new Error("Invalid direction")
-	}
-	console.log("Moving ", this.pos, dest)
-	try {
-		board.movePlayer(this.pos, dest)
-		console.log(this)
-		this.pos = dest
-		console.log(this.pos)
-	} catch(e) {
-		console.error(e)
-		throw new Error("Incorrect move")
-	}
-}
-
-/**
  * Attack another player
  * @param (Player) opponent - player to attack 
  */
@@ -102,12 +66,4 @@ Player.prototype.showDamage = function (damage) {
 	// TODO
 	// Note: show rounded damage to avoid showing things like damaged by 33.333333
 	console.log(`Player damaged by ${damage}`)
-}
-
-// Player.actionHandler()
-
-Player.prototype.actionHandler = function () {
-	let hasMoved = false
-	let moveDirection = null
-	
 }
