@@ -34,8 +34,10 @@ export default function Game (numPlayers = 2) {
 }
 
 Game.prototype.changeTurn = function() {
+	this.board.clearHighlights()
 	this.playerWithTurn = (this.playerWithTurn + 1) % this.numPlayers
 	this.actionHandler.reset(this.players[this.playerWithTurn])
+	this.actionHandler.highlightAvailableMoves()
 }
 
 /**
