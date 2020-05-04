@@ -3,6 +3,7 @@ import config from "./config.js"
 import Player from './player.js'
 import Weapon from "./weapon.js"
 import Consumable from "./consumable.js"
+import Obstacle from "./obstacle.js"
 
 /**
  * Responsible for handling player actions on board - movement and attack
