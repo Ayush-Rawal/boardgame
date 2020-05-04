@@ -32,7 +32,7 @@ ActionHandler.prototype.reset = function (player) {
 	this.player = player
 	this.numMoves = 0
 	this.actionableTiles = []
-	this.isBattlePhaseActive = false
+	this.isInBattlePhase = false
 	this.handleMoves()
 }
 
