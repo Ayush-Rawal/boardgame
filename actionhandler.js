@@ -31,6 +31,25 @@ ActionHandler.prototype.reset = function (player) {
 }
 
 /**
+ * Returns if battle phase should be active
+ * True if another player is in vicinity, false otherwise
+ */
+ActionHandler.prototype.shouldActivateBattlePhase = function() {
+	let board = this.board.board
+	let {x, y} = this.player.pos
+	if (
+		(board[x - 1] && board[x - 1][y] && board[x - 1][y].contains(Player))
+		 || (board[x + 1] && board[x + 1][y] && board[x + 1][y].contains(Player))
+		 || (board[x][y - 1] && board[x][y - 1].contains(Player))
+		 || (board[x][y + 1] && board[x][y + 1].contains(Player))
+	) {
+		return true
+	} else {
+		return false
+	}
+}
+
+/**
  * Highlight available moves to player on board
  */
 ActionHandler.prototype.highlightAvailableMoves = function () {
