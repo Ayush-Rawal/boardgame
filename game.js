@@ -34,7 +34,7 @@ export default function Game (numPlayers = 2) {
 	onKey('T', () => this.changeTurn())
 	this.board.board.forEach((row, i) => {
 		row.forEach((_, j) => {
-			onClick({x: i, y: j}, this.actionHandler.handleClick)
+			onClick({x: i, y: j}, this.actionHandler.handleClick.bind(this.actionHandler))
 		})
 	})
 }

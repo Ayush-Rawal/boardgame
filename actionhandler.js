@@ -111,6 +111,24 @@ ActionHandler.prototype.getAvailableMovesInDirection = function (direction) {
 	}
 	return movableTiles
 }
+
+ActionHandler.prototype.handleClick = function(pos) {
+	let playerPos = this.player.pos
+	let dx = pos.x - playerPos.x
+	let dy = pos.y - playerPos.y
+	if(this.actionableTiles.some(tilePos => tilePos.x === pos.x && tilePos.y === pos.y)) {
+		if(dy < 0) {
+			this.move("UP", Math.abs(dy))
+		} else if(dx > 0) {
+			this.move("RIGHT", Math.abs(dx))
+		} else if(dy > 0) {
+			this.move("DOWN", Math.abs(dy))
+		} else if(dx < 0) {
+			this.move("LEFT", Math.abs(dx))
+		}
+	}
+}
+
 /**
  * Execute valid move on key press
  */
