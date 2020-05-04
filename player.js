@@ -11,7 +11,7 @@ import Sprite from './sprite.js'
  */
 export default function Player(name, pos) {
 	this.name = name
-	this.hp = 400
+	this.hp = 100
 	this.weapon = new Weapon(0)
 	this.armor = 0
 	this.pos = pos
@@ -85,3 +85,4 @@ Player.prototype.use = function(consumable) {
 	console.log("After Usage")
 	console.log(this)
 }
+ 
