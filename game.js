@@ -27,10 +27,10 @@ export default function Game (numPlayers = 2) {
 	this.actionHandler = new ActionHandler(this.board, this.players[this.playerWithTurn])
 	this.initializeLoot()
 
-	onKey('up, W', () => this.actionHandler.move('UP', 1))
-	onKey('left, A', () => this.actionHandler.move('LEFT', 1))
-	onKey('down, S', () => this.actionHandler.move('DOWN', 1))
-	onKey('right, D', () => this.actionHandler.move('RIGHT', 1))
+	onKey('up, W', () => this.actionHandler.handleKey('UP'))
+	onKey('left, A', () => this.actionHandler.handleKey('LEFT'))
+	onKey('down, S', () => this.actionHandler.handleKey('DOWN'))
+	onKey('right, D', () => this.actionHandler.handleKey('RIGHT'))
 	onKey('T', () => this.changeTurn())
 	this.board.board.forEach((row, i) => {
 		row.forEach((_, j) => {

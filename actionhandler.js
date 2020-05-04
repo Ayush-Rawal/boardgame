@@ -111,7 +111,16 @@ ActionHandler.prototype.getAvailableMovesInDirection = function (direction) {
 	}
 	return movableTiles
 }
+/**
+ * Execute valid move on key press
+ */
+ActionHandler.prototype.handleKey = function(direction) {
+	const magnitude = 1
+	if(this.isValidMove(direction, magnitude)) {
+		this.move(direction, magnitude)
+	}
 }
+
 
 /**
  * Move player on the board
