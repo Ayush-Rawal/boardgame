@@ -45,6 +45,26 @@ ActionHandler.prototype.handleMoves = function() {
 	}
 }
 
+ActionHandler.prototype.handleBattle = function() {
+	let board = this.board.board
+	let {x, y} = this.player.pos
+	let attackableTiles = []
+	if (board[x - 1] && board[x - 1][y] && board[x - 1][y].contains(Player)) {
+		attackableTiles.push({x: x - 1, y})
+	}
+	if (board[x + 1] && board[x + 1][y] && board[x + 1][y].contains(Player)) {
+		attackableTiles.push({x: x + 1, y})
+	}
+	if (board[x][y - 1] && board[x][y - 1].contains(Player)) {
+		attackableTiles.push({x, y: y - 1})
+	}
+	if (board[x][y + 1] && board[x][y + 1].contains(Player)) {
+		attackableTiles.push({x, y: y + 1})
+	}
+	this.board.highlightTiles(attackableTiles)
+	this.actionableTiles = attackableTiles
+}
+
 /**
  * Returns if battle phase should be active
  * True if another player is in vicinity, false otherwise
@@ -113,18 +133,25 @@ ActionHandler.prototype.getAvailableMovesInDirection = function (direction) {
 }
 
 ActionHandler.prototype.handleClick = function(pos) {
-	let playerPos = this.player.pos
-	let dx = pos.x - playerPos.x
-	let dy = pos.y - playerPos.y
-	if(this.actionableTiles.some(tilePos => tilePos.x === pos.x && tilePos.y === pos.y)) {
-		if(dy < 0) {
-			this.move("UP", Math.abs(dy))
-		} else if(dx > 0) {
-			this.move("RIGHT", Math.abs(dx))
-		} else if(dy > 0) {
-			this.move("DOWN", Math.abs(dy))
-		} else if(dx < 0) {
-			this.move("LEFT", Math.abs(dx))
+	if (this.isInBattlePhase) {
+		if(this.actionableTiles.some(tilePos => tilePos.x === pos.x && tilePos.y === pos.y)) {
+			this.player.attack(this.board.board[pos.x][pos.y].entity)
+			this.handleMoves()
+		}
+	} else {
+		let playerPos = this.player.pos
+		let dx = pos.x - playerPos.x
+		let dy = pos.y - playerPos.y
+		if(this.actionableTiles.some(tilePos => tilePos.x === pos.x && tilePos.y === pos.y)) {
+			if(dy < 0) {
+				this.move("UP", Math.abs(dy))
+			} else if(dx > 0) {
+				this.move("RIGHT", Math.abs(dx))
+			} else if(dy > 0) {
+				this.move("DOWN", Math.abs(dy))
+			} else if(dx < 0) {
+				this.move("LEFT", Math.abs(dx))
+			}
 		}
 	}
 }
@@ -133,12 +160,25 @@ ActionHandler.prototype.handleClick = function(pos) {
  * Execute valid move on key press
  */
 ActionHandler.prototype.handleKey = function(direction) {
-	const magnitude = 1
-	if(this.isValidMove(direction, magnitude)) {
-		this.move(direction, magnitude)
+	if(this.isInBattlePhase) {
+		let {direction: coordDirection, sign} = getDirectionCoordinates(direction)
+		let tile
+		if(coordDirection === 'x') {
+			tile = this.board.board[this.player.pos.x + sign] && this.board.board[this.player.pos.x + sign][this.player.pos.y]
+		} else {
+			tile = this.board.board[this.player.pos.x][this.player.pos.y + sign]
+		}
+		if (tile.contains(Player)) {
+			this.player.attack(tile.entity)
+			this.handleMoves()
+		}
+	} else {
+		const magnitude = 1
+		if(this.isValidMove(direction, magnitude)) {
+			this.move(direction, magnitude)
+		}
 	}
 }
-
 
 /**
  * Move player on the board
