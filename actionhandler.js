@@ -11,7 +11,7 @@ import Obstacle from "./obstacle.js"
  * @param {Object} board - Game board instance
  * @param {Object} player - Game player instancce
  */
-export default function ActionHandler(board, player) {
+export default function ActionHandler(board, player, changeTurn) {
 	this.board = board
 	this.hasMoved = false
 	this.moveDirection = null
@@ -19,6 +19,7 @@ export default function ActionHandler(board, player) {
 	this.numMoves = 0
 	this.isInBattlePhase = false
 	this.actionableTiles = []
+	this.changeTurn = changeTurn
 	this.handleMoves()
 }
 
@@ -99,6 +100,9 @@ ActionHandler.prototype.getAvailableMoves = function () {
 	}
 	this.actionableTiles = movableTiles
 	this.board.highlightTiles(movableTiles)
+	if(!movableTiles.length) {
+		this.changeTurn()
+	}
 }
 
 ActionHandler.prototype.getAvailableMovesInDirection = function (direction) {
@@ -136,7 +140,8 @@ ActionHandler.prototype.handleClick = function(pos) {
 	if (this.isInBattlePhase) {
 		if(this.actionableTiles.some(tilePos => tilePos.x === pos.x && tilePos.y === pos.y)) {
 			this.player.attack(this.board.board[pos.x][pos.y].entity)
-			this.handleMoves()
+			// this.handleMoves()
+			this.changeTurn()
 		}
 	} else {
 		let playerPos = this.player.pos
@@ -170,7 +175,8 @@ ActionHandler.prototype.handleKey = function(direction) {
 		}
 		if (tile.contains(Player)) {
 			this.player.attack(tile.entity)
-			this.handleMoves()
+			// this.handleMoves()
+			this.changeTurn()
 		}
 	} else {
 		const magnitude = 1
@@ -242,7 +248,6 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 		console.error(e)
 		throw new Error("Incorrect move")
 	}
-
 	this.getAvailableMoves()
 }
 

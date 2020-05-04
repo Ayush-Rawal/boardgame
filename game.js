@@ -25,7 +25,7 @@ export default function Game (numPlayers = 2) {
 	this.score = new Array(numPlayers)
 	this.gameTime = 0
 	this.initializeLoot()
-	this.actionHandler = new ActionHandler(this.board, this.players[this.playerWithTurn])
+	this.actionHandler = new ActionHandler(this.board, this.players[this.playerWithTurn], this.changeTurn.bind(this))
 
 	onKey('up, W', () => this.actionHandler.handleKey('UP'))
 	onKey('left, A', () => this.actionHandler.handleKey('LEFT'))
