@@ -72,28 +72,7 @@ ActionHandler.prototype.getAvailableMovesInDirection = function (direction) {
 	// 		origPos.x !== pos.x && origPos.y !== pos.y
 	// }
 	let movesRemaining = config.game.maxMoves - this.numMoves
-	let incrementDirection = null
-	let incrementSign = 1
-	switch(direction) {
-		case 'UP':
-			incrementDirection = 'y'
-			incrementSign = -1
-			break;
-		case 'RIGHT':
-			incrementDirection = 'x'
-			incrementSign = 1
-			break;
-		case 'DOWN':
-			incrementDirection = 'y'
-			incrementSign = 1
-			break;
-		case 'LEFT':
-			incrementDirection = 'x'
-			incrementSign = -1
-			break;
-		default:
-			throw new Error("Invalid direction")
-	}
+	let {direction: incrementDirection, sign: incrementSign} = getDirectionCoordinates(direction)
 
 	let movableTiles = []
 
@@ -205,4 +184,33 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 	}
 
 	this.getAvailableMoves()
+}
+
+function getDirectionCoordinates(direction) {
+	let coordDirection = null
+	let sign = 1
+	switch(direction) {
+		case 'UP':
+			coordDirection = 'y'
+			sign = -1
+			break;
+		case 'RIGHT':
+			coordDirection = 'x'
+			sign = 1
+			break;
+		case 'DOWN':
+			coordDirection = 'y'
+			sign = 1
+			break;
+		case 'LEFT':
+			coordDirection = 'x'
+			sign = -1
+			break;
+		default:
+			throw new Error("Invalid direction")
+	}
+	return {
+		direction: coordDirection,
+		sign
+	}
 }
