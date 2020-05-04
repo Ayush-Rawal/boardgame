@@ -1,5 +1,4 @@
 import Tile from "./tile.js"
-import { onClick } from "./clicky.js"
 
 /**
  * Represents the game board.
@@ -12,11 +11,6 @@ export default function Board(size = {x: 8, y: 8}) {
 	let board = new Array(size.x).fill(null)
 	
 	this.board = board.map(_ => new Array(size.y).fill(null).map(_ => new Tile()))
-	this.board.forEach((row, i) => {
-		row.forEach((tile, j) => {
-			onClick({x: i, y: j}, ()  => console.log("Click on tile at", i, j))
-		})
-	})
 	console.table(this.board)
 }
 

@@ -5,6 +5,7 @@ import config from "./config.js"
 import Weapon from './weapon.js'
 import Obstacle from "./obstacle.js"
 import Consumable from './consumable.js'
+import { onClick } from "./clicky.js"
 import ActionHandler from "./actionhandler.js"
 
 /**
@@ -31,6 +32,11 @@ export default function Game (numPlayers = 2) {
 	onKey('down, S', () => this.actionHandler.move('DOWN', 1))
 	onKey('right, D', () => this.actionHandler.move('RIGHT', 1))
 	onKey('T', () => this.changeTurn())
+	this.board.board.forEach((row, i) => {
+		row.forEach((_, j) => {
+			onClick({x: i, y: j}, this.actionHandler.handleClick)
+		})
+	})
 }
 
 Game.prototype.changeTurn = function() {
