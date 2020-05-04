@@ -1,5 +1,6 @@
 import Sprite from "./sprite.js"
 import config from './config.js'
+import Player from "./player.js"
 
 /**
  * Represents a board tile
@@ -10,11 +11,6 @@ export default function Tile() {
 	this.sprite = new Sprite(sprite.uri, sprite.srcX, sprite.srcY, sprite.frameW, sprite.frameH)
 	this.entity = null
 	this.isHighlighted = false
-
-	// ! Temporary highlighting workaround
-	this.dirtSprite = new Sprite(sprite.uri, sprite.srcX, sprite.srcY, sprite.frameW, sprite.frameH)
-	this.grassSprite = new Sprite("./assets/tiles/100x100/tiles_named_by_description/grass_biome/grass-no_edges.png", sprite.srcX, sprite.srcY, sprite.frameW, sprite.frameH)
-	this.waterSprite = new Sprite("./assets/tiles/100x100/tiles_named_by_description/grass_biome/water-no_edges.png", sprite.srcX, sprite.srcY, sprite.frameW, sprite.frameH)
 }
 
 /**
@@ -36,17 +32,20 @@ Tile.prototype.contains = function (blueprint) {
  * @param (number) pos.y - y coordinate of position for rendering
  */
 Tile.prototype.render = function(ctx, pos) {
-	// ! Temporary highlighting workaround
-	if (this.isHighlighted && this.contains(null)) {
-		this.grassSprite.render(ctx, pos.x * this.sprite.frameW, pos.y * this.sprite.frameH)
-	} else if(this.isHighlighted) {
-		this.waterSprite.render(ctx, pos.x * this.sprite.frameW, pos.y * this.sprite.frameH)
-	} else {
-		this.dirtSprite.render(ctx, pos.x * this.sprite.frameW, pos.y * this.sprite.frameH)
-	}
+	this.sprite.render(ctx, pos.x * this.sprite.frameW, pos.y * this.sprite.frameH)
 	
-	// ! Enable after temporary highlighting workaround is removed
-	// this.sprite.render(ctx, pos.x * this.sprite.frameW, pos.y * this.sprite.frameH)
+	if(this.isHighlighted) {
+		if(this.contains(Player)) {
+			ctx.strokeStyle = 'rgba(237, 0, 0, 0.8)'
+			ctx.fillStyle = 'rgba(240, 0, 0, 0.3)'
+		} else {
+			ctx.strokeStyle = 'rgba(237, 237, 17, 0.8)'
+			ctx.fillStyle = 'rgba(240, 240, 14, 0.3)'
+		}
+		ctx.strokeRect(pos.x * this.sprite.frameW, pos.y * this.sprite.frameH, this.sprite.frameW, this.sprite.frameH);		
+		ctx.fillRect(pos.x * this.sprite.frameW, pos.y * this.sprite.frameH, this.sprite.frameW, this.sprite.frameH);
+	}
+
 	if(this.entity) {
 		// Calc absolute positions from tile positions
 		// entity to be rendered at centre of tile ( addition of rounded 1/2 width and height)
