@@ -61,10 +61,10 @@ Game.prototype.initalizePlayers = function () {
 		let pos = this.board.findRandomUnoccupiedTile()
 		while(
 			// Check no other player nearby (so we won't initiate battle phase at the start)
-			(board[x - 1][y] && board[x - 1][y].contains(Player))
-			 || (board[x + 1][y] && board[x + 1][y].contains(Player))
-			 || (board[x][y - 1] && board[x][y - 1].contains(Player))
-			 || (board[x][y + 1] && board[x][y + 1].contains(Player))
+			(board[pos.x - 1] && board[pos.x - 1][pos.y] && board[pos.x - 1][pos.y].contains(Player))
+			 || (board[pos.x + 1] && board[pos.x + 1][pos.y] && board[pos.x + 1][pos.y].contains(Player))
+			 || (board[pos.x][pos.y - 1] && board[pos.x][pos.y - 1].contains(Player))
+			 || (board[pos.x][pos.y + 1] && board[pos.x][pos.y + 1].contains(Player))
 		) {
 			pos = this.board.findRandomUnoccupiedTile()
 		}
