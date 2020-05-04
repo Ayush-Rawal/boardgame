@@ -59,8 +59,7 @@ Game.prototype.render = function (ctx) {
  * Initialize players randomly across the board
  */
 Game.prototype.initalizePlayers = function () {
-	// Initialize players and their position on the board depending on board size and number of players
-	// TODO: Position players on board
+	// Initialize players and their position on the board so that no players touch each other
 	let players = []
 	let board = this.board.board
 	for (let i = 0; i < this.numPlayers; i++) {
