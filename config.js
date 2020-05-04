@@ -18,6 +18,31 @@ export default  {
 	players: [{
 		sprite: {}
 	}],
+	obstacles: [{
+		sprite: {
+			uri: "./assets/Shikashi's Fantasy Icons Pack/2 - Transparent & Drop Shadow.png",
+			srcX: 2,
+			srcY: 4,
+			frameW: 32,
+			frameH: 32,
+		}
+	}, {
+		sprite: {
+			uri: "./assets/Shikashi's Fantasy Icons Pack/2 - Transparent & Drop Shadow.png",
+			srcX: 3,
+			srcY: 4,
+			frameW: 32,
+			frameH: 32,
+		}
+	}, {
+		sprite: {
+			uri: "./assets/Shikashi's Fantasy Icons Pack/2 - Transparent & Drop Shadow.png",
+			srcX: 4,
+			srcY: 4,
+			frameW: 32,
+			frameH: 32,
+		}
+	}],
 	weapons: [{
 		sprite: {
 			uri: "./assets/Shikashi's Fantasy Icons Pack/2 - Transparent & Drop Shadow.png",

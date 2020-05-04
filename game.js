@@ -3,7 +3,7 @@ import Player from './player.js'
 import onKey from './node_modules/keymaster/keymaster.js'
 import config from "./config.js"
 import Weapon from './weapon.js'
-import Sprite from './sprite.js'
+import Obstacle from "./obstacle.js"
 import Consumable from './consumable.js'
 import ActionHandler from "./actionhandler.js"
 
@@ -81,6 +81,8 @@ Game.prototype.initalizePlayers = function () {
 Game.prototype.initializeLoot = function() {
 	spawnObjects(this.board, Math.min(this.numPlayers, 4), config.weapons, Weapon)
 	spawnObjects(this.board, this.numPlayers, config.consumables, Consumable)
+	let numObstacles = (config.board.size.width + config.board.size.height) / 2
+	spawnObjects(this.board, numObstacles, config.obstacles, Obstacle)
 }
 
 /**
