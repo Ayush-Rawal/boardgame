@@ -164,7 +164,7 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 	// ) {
 	// 	return null
 	// }
-	this.board.clearHighlights()
+
 	let dest = Object.assign({}, this.player.pos)
 	// console.log("Player pos before switch ", this.player.pos)
 	switch(direction) {
@@ -196,36 +196,47 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 			throw new Error("Invalid direction")
 	}
 	try {
-		if(this.board.board[dest.x] && this.board.board[dest.x][dest.y]) {
-			if(this.board.board[dest.x][dest.y].contains(Player)) {
-				this.player.attack(this.board.board[dest.x][dest.y].entity)
-				return
-			}
-			let oldWeapon = null
-			if(this.board.board[dest.x][dest.y].contains(Weapon)) {
-				let newWeapon = this.board.board[dest.x][dest.y].entity
-				oldWeapon = this.player.swapWeapon(newWeapon)
-			}
-			if(this.board.board[dest.x][dest.y].contains(Consumable)) {
-				let consumable = this.board.board[dest.x][dest.y].entity
-				this.player.use(consumable)
-				this.board.board[dest.x][dest.y].entity = null
-			}
-			this.board.moveObject(this.player.pos, dest)
-			let oldPos = Object.assign({}, this.player.pos)
-			this.player.pos = dest
-			if(oldWeapon) {
-				this.board.placeObject(oldWeapon, oldPos)			
-			}
-		} else {
-			return null
-		}
+		this.board.clearHighlights()
+		this.moveToPosition(dest)
 	} catch(e) {
 		console.error(e)
 		throw new Error("Incorrect move")
 	}
 
 	this.getAvailableMoves()
+}
+
+/**
+ * @param {Coordinates} dest - destination tile coordinates
+ */
+ActionHandler.prototype.moveToPosition = function (dest) {
+
+	if(this.board.board[dest.x] && this.board.board[dest.x][dest.y]) {
+
+		if(this.board.board[dest.x][dest.y].contains(Player)) {
+			this.player.attack(this.board.board[dest.x][dest.y].entity)
+			return
+		}
+
+		let oldWeapon = null
+		if(this.board.board[dest.x][dest.y].contains(Weapon)) {
+			let newWeapon = this.board.board[dest.x][dest.y].entity
+			oldWeapon = this.player.swapWeapon(newWeapon)
+		}
+		if(this.board.board[dest.x][dest.y].contains(Consumable)) {
+			let consumable = this.board.board[dest.x][dest.y].entity
+			this.player.use(consumable)
+			this.board.board[dest.x][dest.y].entity = null
+		}
+		this.board.moveObject(this.player.pos, dest)
+		let oldPos = Object.assign({}, this.player.pos)
+		this.player.pos = dest
+		if(oldWeapon) {
+			this.board.placeObject(oldWeapon, oldPos)			
+		}
+	} else {
+		return null
+	}
 }
 
 /**
