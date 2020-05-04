@@ -52,15 +52,71 @@ ActionHandler.prototype.shouldActivateBattlePhase = function() {
 /**
  * Highlight available moves to player on board
  */
-ActionHandler.prototype.highlightAvailableMoves = function () {
+ActionHandler.prototype.getAvailableMoves = function () {
+	let movableTiles = []
 	if(this.hasMoved) {
-		this.highlightMovesInDirection(this.moveDirection)
+		movableTiles = movableTiles.concat(this.getAvailableMovesInDirection(this.moveDirection))
 	} else {
-		this.highlightMovesInDirection("UP")
-		this.highlightMovesInDirection("RIGHT")
-		this.highlightMovesInDirection("DOWN")
-		this.highlightMovesInDirection("LEFT")
+		movableTiles = movableTiles.concat(this.getAvailableMovesInDirection("UP"))
+		movableTiles = movableTiles.concat(this.getAvailableMovesInDirection("RIGHT"))
+		movableTiles = movableTiles.concat(this.getAvailableMovesInDirection("DOWN"))
+		movableTiles = movableTiles.concat(this.getAvailableMovesInDirection("LEFT"))
 	}
+	this.actionableTiles = movableTiles
+	this.board.highlightTiles(movableTiles)
+}
+
+ActionHandler.prototype.getAvailableMovesInDirection = function (direction) {
+	// const hasOtherPlayer = (pos, origPos) => {
+	// 	return this.board[pos.x] && this.board[pos.x][pos.y] && this.board[pos.x][pos.y].contains(Player) &&
+	// 		origPos.x !== pos.x && origPos.y !== pos.y
+	// }
+	let movesRemaining = config.game.maxMoves - this.numMoves
+	let incrementDirection = null
+	let incrementSign = 1
+	switch(direction) {
+		case 'UP':
+			incrementDirection = 'y'
+			incrementSign = -1
+			break;
+		case 'RIGHT':
+			incrementDirection = 'x'
+			incrementSign = 1
+			break;
+		case 'DOWN':
+			incrementDirection = 'y'
+			incrementSign = 1
+			break;
+		case 'LEFT':
+			incrementDirection = 'x'
+			incrementSign = -1
+			break;
+		default:
+			throw new Error("Invalid direction")
+	}
+
+	let movableTiles = []
+
+	for(let i = 1; i <= movesRemaining; i += 1) {
+		let tile
+		if(incrementDirection === 'x') {
+			tile = this.board.board[this.player.pos.x + i * incrementSign] && this.board.board[this.player.pos.x + i * incrementSign][this.player.pos.y]
+		} else {
+			tile = this.board.board[this.player.pos.x][this.player.pos.y + i * incrementSign]
+		}
+		if(!tile || tile.contains(Obstacle) || tile.contains(Player)) {
+			break
+		}
+		if (!tile.contains(Player) && !tile.contains(Obstacle)) {
+			if(incrementDirection === 'x') {
+				movableTiles.push({x: this.player.pos.x + i * incrementSign, y: this.player.pos.y})
+			} else {
+				movableTiles.push({x: this.player.pos.x, y: this.player.pos.y + i * incrementSign})
+			}
+		}
+	}
+	return movableTiles
+}
 }
 
 /**
@@ -147,85 +203,6 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 		console.error(e)
 		throw new Error("Incorrect move")
 	}
-	this.highlightAvailableMoves()
+
+	this.getAvailableMoves()
 }
-
-ActionHandler.prototype.highlightMovesInDirection = function (direction) {
-	// console.log(direction)
-	const hasOtherPlayer = (pos, origPos) => {
-		return this.board[pos.x] && this.board[pos.x][pos.y] && this.board[pos.x][pos.y].contains(Player) &&
-			origPos.x !== pos.x && origPos.y !== pos.y
-	}
-	let movesRemaining = config.game.maxMoves - this.numMoves
-	let incrementDirection = null
-	let incrementSign = 1
-	switch(direction) {
-		case 'UP':
-			incrementDirection = 'y'
-			incrementSign = -1
-			break;
-		case 'RIGHT':
-			incrementDirection = 'x'
-			incrementSign = 1
-			break;
-		case 'DOWN':
-			incrementDirection = 'y'
-			incrementSign = 1
-			break;
-		case 'LEFT':
-			incrementDirection = 'x'
-			incrementSign = -1
-			break;
-		default:
-			throw new Error("Invalid direction")
-	}
-
-	let movableTiles = []
-	let attackableTiles = []
-
-	for(let i = 1; i <= movesRemaining; i += 1) {
-		// console.log("i ", i, "incrementing by ", i*incrementSign)
-		let tile
-		if(incrementDirection === 'x') {
-			tile = this.board.board[this.player.pos.x + i * incrementSign] && this.board.board[this.player.pos.x + i * incrementSign][this.player.pos.y]
-		} else {
-			tile = this.board.board[this.player.pos.x][this.player.pos.y + i * incrementSign]
-		}
-		if(!tile) {
-			break
-		}
-		// console.log(tile)
-		// TODO: Replace with not contains player or obstacle once obstacles are added
-		if (tile.contains(null) || tile.contains(Weapon) || tile.contains(Consumable)) {
-			if(incrementDirection === 'x') {
-				movableTiles.push({x: this.player.pos.x + i * incrementSign, y: this.player.pos.y})
-			} else {
-				movableTiles.push({x: this.player.pos.x, y: this.player.pos.y + i * incrementSign})
-			}
-		}
-	}
-	movableTiles.forEach(pos => {
-		// Add reachable tiles that contain players to attackable
-		if(hasOtherPlayer({x: pos.x + 1, y: pos.y}, this.player.pos)) {
-			attackableTiles.push({x: pos.x + 1, y: pos.y})
-		}
-		if(hasOtherPlayer({x: pos.x - 1, y: pos.y}, this.player.pos)) {
-			attackableTiles.push({x: pos.x - 1, y: pos.y})
-		}
-		if(hasOtherPlayer({x: pos.x, y: pos.y + 1}, this.player.pos)) {
-			attackableTiles.push({x: pos.x, y: pos.y + 1})
-		}
-		if(hasOtherPlayer({x: pos.x, y: pos.y - 1}, this.player.pos)) {
-			attackableTiles.push({x: pos.x, y: pos.y - 1})
-		}
-	})
-	// console.log(this.board)
-	this.board.highlightTiles(movableTiles)
-	this.board.highlightTiles(attackableTiles)
-	// attackableTiles.forEach(pos => board.board[pos.x][pos.y].isHighlighted = true)
-}
-
-
-// ActionHandler.prototype.render = function (ctx) {
-// 	// this.highlightAvailableMoves()
-// }
