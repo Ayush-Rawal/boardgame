@@ -186,6 +186,25 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 	this.getAvailableMoves()
 }
 
+/**
+ * Determine if movement is valid or not
+ * @param {enum} direction - direction to move in
+ * @param {number} magnitude - number of tiles to move
+ */
+ActionHandler.prototype.isValidMove = function (direction, magnitude) {
+	let {direction: coordDirection, sign} = getDirectionCoordinates(direction)
+	let pos = {}
+	const playerPos = this.player.pos
+	if(coordDirection === 'x') {
+		pos.x = sign * magnitude 
+		pos.y = 0
+	} else {
+		pos.x = 0
+		pos.y = sign * magnitude 
+	}
+	return this.actionableTiles.some(tilePos => tilePos.x === pos.x + playerPos.x && tilePos.y === pos.y + playerPos.y)
+}
+
 function getDirectionCoordinates(direction) {
 	let coordDirection = null
 	let sign = 1
