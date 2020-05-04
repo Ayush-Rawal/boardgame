@@ -15,13 +15,12 @@ let clickys = []
  * @param {object} event event object 
  */
 function clickHandler(event) {
-	let clickX = event.pageX - canvas.offsetLeft
-	let clickY = event.pageY - canvas.offsetTop
+	let clickX = Math.floor((event.pageX - canvas.offsetLeft) / tileWidth)
+	let clickY = Math.floor((event.pageY - canvas.offsetTop) / tileHeight)
 	clickys.forEach((tile) => {
-		let x = tile.pos.x * tileWidth
-		let y = tile.pos.y * tileHeight
-		if(clickY > y && clickY < y + tileHeight && clickX > x && clickX < x + tileWidth) {
-			tile.callback({x: clickX - x, y: clickY - y}) // pass click position relative to the element
+		let {x, y} = tile.pos
+		if(clickX === x && clickY === y) {
+			tile.callback({x, y}) // pass click position relative to the element
 		}
 	})
 }
