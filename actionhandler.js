@@ -17,7 +17,9 @@ export default function ActionHandler(board, player) {
 	this.moveDirection = null
 	this.player = player
 	this.numMoves = 0
-this.highlightAvailableMoves()
+	this.isInBattlePhase = false
+	this.actionableTiles = []
+	this.handleMoves()
 }
 
 /**
@@ -29,6 +31,18 @@ ActionHandler.prototype.reset = function (player) {
 	this.moveDirection = null
 	this.player = player
 	this.numMoves = 0
+	this.actionableTiles = []
+	this.isBattlePhaseActive = false
+	this.handleMoves()
+}
+
+ActionHandler.prototype.handleMoves = function() {
+	this.isInBattlePhase = this.shouldActivateBattlePhase()
+	if(this.isInBattlePhase) {
+		this.handleBattle()
+	} else {
+		this.getAvailableMoves()
+	}
 }
 
 /**
