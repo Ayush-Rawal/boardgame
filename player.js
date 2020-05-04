@@ -1,6 +1,5 @@
 import Weapon from './weapon.js'
 import Sprite from './sprite.js'
-import {board} from "./index.js"
 
 /**
  * Represents a player.
