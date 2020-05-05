@@ -53,8 +53,8 @@ export default  {
 		},
 		damage: 10,
 		offset: {
-			x: 8,
-			y: -2
+			x: 12,
+			y: -1
 		}
 	}, {
 		sprite: {
@@ -66,8 +66,8 @@ export default  {
 		},
 		damage: 8,
 		offset: {
-			x: 8,
-			y: -2
+			x: 12,
+			y: -1
 		}
 	}, {
 		sprite: {
@@ -79,8 +79,8 @@ export default  {
 		},
 		damage: 14,
 		offset: {
-			x: 8,
-			y: -2
+			x: 12,
+			y: -1
 		}
 	}, {
 		sprite: {
@@ -92,8 +92,8 @@ export default  {
 		},
 		damage: 18,
 		offset: {
-			x: 8,
-			y: -2
+			x: 12,
+			y: -1
 		}
 	}],
 	consumables: [{
