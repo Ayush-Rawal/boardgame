@@ -50,9 +50,9 @@ Tile.prototype.render = function(ctx, pos) {
 		// Calc absolute positions from tile positions
 		// entity to be rendered at centre of tile ( addition of rounded 1/2 width and height)
 		let entityPos = {
-			x: (pos.x * this.sprite.frameW) + Math.round(0.5 * this.sprite.frameW),
-			y: (pos.y * this.sprite.frameH) + Math.round(0.5 * this.sprite.frameH)
+			x: (pos.x * this.sprite.frameW) ,
+			y: (pos.y * this.sprite.frameH) 
 		}
-		this.entity.render(ctx, entityPos, 16, 16)
+		this.entity.render(ctx, entityPos, 24, 24)
 	}
 }

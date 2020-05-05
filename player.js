@@ -53,9 +53,9 @@ Player.prototype.render = function (ctx, pos) {
 	let {x, y} = pos
 	// center player
 	// TODO: Replace magic number with const in config
-	x = x - 8
-	y = y - 8
-	this.sprite.render(ctx, x, y)
+	x = x + 4
+	y = y + 4
+	this.sprite.render(ctx, x, y, 20, 20)
 	this.weapon.render(ctx, {x, y}, 16, 16)
 	// TODO: Add offsets to weapons
 }
