@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Ayush-Rawal/boardgame#readme",
   "dependencies": {
+    "jquery": "^3.5.1",
     "keymaster": "^1.6.2"
   }
 }

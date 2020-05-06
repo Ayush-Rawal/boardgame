@@ -7,6 +7,7 @@ import Obstacle from "./obstacle.js"
 import Consumable from './consumable.js'
 import { onClick } from "./clicky.js"
 import ActionHandler from "./actionhandler.js"
+import Dashboard from "./dashboard.js"
 
 /**
  * Represents the game
@@ -37,6 +38,9 @@ export default function Game (numPlayers = 2) {
 			onClick({x: i, y: j}, this.actionHandler.handleClick.bind(this.actionHandler))
 		})
 	})
+
+	this.dashboard = new Dashboard(this.players, this.changeTurn.bind(this), this.actionHandler.defend.bind(this.actionHandler))
+
 }
 
 Game.prototype.changeTurn = function() {
@@ -52,7 +56,7 @@ Game.prototype.changeTurn = function() {
  */
 Game.prototype.render = function (ctx) {
 	this.board.render(ctx)
-	// this.actionHandler.render(ctx)
+	this.dashboard.render(this.playerWithTurn, this.actionHandler.isInBattlePhase)
 }
 
 /**
