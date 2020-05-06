@@ -12,10 +12,10 @@ import Sprite from './sprite.js'
 export default function Player(name, pos) {
 	this.name = name
 	this.hp = 100
+	this.maxHP = 100
 	this.weapon = new Weapon(0)
 	this.armor = 0
 	this.pos = pos
-	console.log("Player created", this.pos)
 	this.sprite = new Sprite("./assets/kp1/characters/knight_16x16-spritesheet_no-bkg_char-set-1.png", 0, 0, 16, 16)
 }
 
@@ -40,6 +40,13 @@ Player.prototype.defend = function () {
 	// TODO: End extra armor at end of turn
 	// Note: Add a status mechanism that takes care of status effects ending at diff turns
 	this.armor = 0.5
+}
+
+/**
+ * Clear extra armor gained
+ */
+Player.prototype.clearDefence = function() {
+	this.armor = 0
 }
 
 /**

@@ -35,6 +35,7 @@ ActionHandler.prototype.reset = function (player) {
 	this.actionableTiles = []
 	this.isInBattlePhase = false
 	this.handleMoves()
+	this.clearDefence()
 }
 
 ActionHandler.prototype.handleMoves = function() {
@@ -134,6 +135,15 @@ ActionHandler.prototype.getAvailableMovesInDirection = function (direction) {
 		}
 	}
 	return movableTiles
+}
+
+ActionHandler.prototype.defend = function () {
+	this.player.defend()
+	this.changeTurn()
+}
+
+ActionHandler.prototype.clearDefence = function () {
+	this.player.clearDefence()
 }
 
 ActionHandler.prototype.handleClick = function(pos) {
