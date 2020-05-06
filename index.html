@@ -15,11 +15,17 @@
 		canvas {
 			margin: auto;
 		}
+		p, h1 {
+			margin: 0.2em;
+		}
 	</style>
 </head>
 <body>
 	<h1>OC BoardGame</h1>
-	<canvas id="primaryCanvas"></canvas>
-	<dashboard></dashboard>
+	<section style="display: flex;">
+		<canvas id="primaryCanvas"></canvas>
+		<section id="dataContainer"></section>
+	</section>
+	<section id="buttonContainer"></section>
 </body>
 </html>

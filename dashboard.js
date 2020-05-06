@@ -1,10 +1,9 @@
 import './node_modules/jquery/dist/jquery.js'
 
-const $root = $("dashboard")
 const $renderOnce = $("<section></section")
 const $renderContinouos = $("<section></section")
-$root.append($renderOnce)
-$root.append($renderContinouos)
+$("#buttonContainer").append($renderOnce)
+$("#dataContainer").append($renderContinouos)
 
 /**
  * Initialize the dashboard and render "to-be-rendered-once" data
@@ -39,17 +38,14 @@ Dashboard.prototype.render = function (turn, isInBattlePhase) {
 }
 
 Dashboard.prototype.displayPlayerData = function () {
-	let $playerDisplay = $("<section id='playerDisplay'></section>").css({
-		"display": "flex",
-		"flex-flow": "row wrap",
-	})
+	let $playerDisplay = $("<section id='playerDisplay'></section>")
 	this.players.forEach(player => {
 		let $player = $("<div class='player'></div>").css({
 			"flex": "1"
 		})
 		$playerDisplay.append($player)
 		$player.html(`
-		<p>${player.name}</p>
+		<h3>${player.name}</h3>
 		<p>HP: ${player.hp}/${player.maxHP}</p>
 		<p>Position: ${JSON.stringify(player.pos)}</p>
 		<p>Damage: ${player.weapon.damage}</p>
