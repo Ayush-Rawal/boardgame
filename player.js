@@ -85,8 +85,9 @@ Player.prototype.swapWeapon = function(newWeapon) {
 }
 
 Player.prototype.use = function(consumable) {
-	console.log("Using consumable on player")
-	console.log(consumable)
 	this[consumable.affectedAttribute] += consumable.effect
+	if(consumable.affectedAttribute === 'hp') {
+		this.maxHP += consumable.effect
+	}
 }
  
