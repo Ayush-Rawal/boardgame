@@ -35,6 +35,9 @@ Dashboard.prototype.render = function (turn, isInBattlePhase) {
 	$renderContinouos.html("")
 	$renderContinouos.append(this.displayTurn())
 	$renderContinouos.append(this.displayPlayerData())
+	if(this.players.length === 1) {
+		$("#winnerDeclaration").text(`${this.players[0].name} Wins!`)
+	}
 }
 
 Dashboard.prototype.displayPlayerData = function () {
