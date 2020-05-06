@@ -17,7 +17,7 @@ export default function Player(index, pos) {
 	this.weapon = new Weapon(0)
 	this.armor = 0
 	this.pos = pos
-	this.sprite = new Sprite("./assets/kp1/characters/knight_16x16-spritesheet_no-bkg_char-set-1.png", 0, 0, 16, 16)
+	this.sprite = new Sprite("./assets/kp1/characters/knight_16x16-spritesheet_no-bkg_char-set-1.png", 0, index * 3, 16, 16)
 }
 
 /**
