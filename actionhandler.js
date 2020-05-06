@@ -11,7 +11,7 @@ import Obstacle from "./obstacle.js"
  * @param {Object} board - Game board instance
  * @param {Object} player - Game player instancce
  */
-export default function ActionHandler(board, player, changeTurn) {
+export default function ActionHandler(board, player, changeTurn, removePlayer) {
 	this.board = board
 	this.hasMoved = false
 	this.moveDirection = null
@@ -20,6 +20,7 @@ export default function ActionHandler(board, player, changeTurn) {
 	this.isInBattlePhase = false
 	this.actionableTiles = []
 	this.changeTurn = changeTurn
+	this.removePlayer = removePlayer
 	this.handleMoves()
 }
 
@@ -149,8 +150,7 @@ ActionHandler.prototype.clearDefence = function () {
 ActionHandler.prototype.handleClick = function(pos) {
 	if (this.isInBattlePhase) {
 		if(this.actionableTiles.some(tilePos => tilePos.x === pos.x && tilePos.y === pos.y)) {
-			this.player.attack(this.board.board[pos.x][pos.y].entity)
-			// this.handleMoves()
+			this.attack(this.board.board[pos.x][pos.y].entity)
 			this.changeTurn()
 		}
 	} else {
@@ -184,8 +184,7 @@ ActionHandler.prototype.handleKey = function(direction) {
 			tile = this.board.board[this.player.pos.x][this.player.pos.y + sign]
 		}
 		if (tile.contains(Player)) {
-			this.player.attack(tile.entity)
-			// this.handleMoves()
+			this.attack(tile.entity)
 			this.changeTurn()
 		}
 	} else {
@@ -225,32 +224,23 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 	// console.log("Player pos before switch ", this.player.pos)
 	switch(direction) {
 		case 'UP':
-			this.hasMoved = true
-			this.moveDirection = "UP"
 			dest.y -= magnitude
-			this.numMoves += magnitude
 			break;
 		case 'RIGHT':
-			this.hasMoved = true
-			this.moveDirection = "RIGHT"
 			dest.x += magnitude
-			this.numMoves += magnitude
 			break;
 		case 'DOWN':
-			this.hasMoved = true
-			this.moveDirection = "DOWN"
 			dest.y += magnitude
-			this.numMoves += magnitude
 			break;
 		case 'LEFT':
-			this.hasMoved = true
-			this.moveDirection = "LEFT"
 			dest.x -= magnitude
-			this.numMoves += magnitude
 			break;
 		default:
 			throw new Error("Invalid direction")
 	}
+	this.hasMoved = true
+	this.moveDirection = direction
+	this.numMoves += magnitude
 	try {
 		this.board.clearHighlights()
 		this.moveToPosition(dest)
@@ -267,12 +257,6 @@ ActionHandler.prototype.move = function (direction, magnitude) {
 ActionHandler.prototype.moveToPosition = function (dest) {
 
 	if(this.board.board[dest.x] && this.board.board[dest.x][dest.y]) {
-
-		if(this.board.board[dest.x][dest.y].contains(Player)) {
-			this.player.attack(this.board.board[dest.x][dest.y].entity)
-			return
-		}
-
 		let oldWeapon = null
 		if(this.board.board[dest.x][dest.y].contains(Weapon)) {
 			let newWeapon = this.board.board[dest.x][dest.y].entity
@@ -291,6 +275,14 @@ ActionHandler.prototype.moveToPosition = function (dest) {
 		}
 	} else {
 		return null
+	}
+}
+
+ActionHandler.prototype.attack = function (opponent) {
+	this.player.attack(opponent)
+	if (opponent.hp <= 0) {
+		opponent.setDeadSprite()
+		this.removePlayer(opponent.index)
 	}
 }
 

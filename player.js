@@ -4,13 +4,14 @@ import Sprite from './sprite.js'
 /**
  * Represents a player.
  * @constructor
- * @param (string) name - Name of the Player
+ * @param (number) index - Unique player index
  * @param (object) pos - position for rendering
  * @param (number) pos.x - x coordinate of position for rendering
  * @param (number) pos.y - y coordinate of position for rendering
  */
-export default function Player(name, pos) {
-	this.name = name
+export default function Player(index, pos) {
+	this.name = `Player ${index}`
+	this.index = index
 	this.hp = 100
 	this.maxHP = 100
 	this.weapon = new Weapon(0)
@@ -28,17 +29,18 @@ Player.prototype.attack = function (opponent) {
 	opponent.hp -= actualDamage
 	this.weapon.animate()
 	opponent.showDamage(actualDamage)
-	if(opponent.hp <= 0) {
-		console.log(`${opponent.name} killed`)
-	}
+}
+
+Player.prototype.setDeadSprite = function () {
+	this.sprite = new Sprite("./assets/Shikashi's Fantasy Icons Pack/2 - Transparent & Drop Shadow.png", 0, 0, 32, 32)
+	delete this.weapon
+	this.weapon = null
 }
 
 /**
  * Defend from attacks during turn
  */
 Player.prototype.defend = function () {
-	// TODO: End extra armor at end of turn
-	// Note: Add a status mechanism that takes care of status effects ending at diff turns
 	this.armor = 0.5
 }
 
@@ -72,8 +74,6 @@ Player.prototype.render = function (ctx, pos) {
  * @param (number) damage - damage done 
  */
 Player.prototype.showDamage = function (damage) {
-	// TODO
-	// Note: show rounded damage to avoid showing things like damaged by 33.333333
 	console.log(`Player damaged by ${damage}`)
 }
 

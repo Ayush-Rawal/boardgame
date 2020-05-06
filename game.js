@@ -20,13 +20,10 @@ export default function Game (numPlayers = 2) {
 	this.numPlayers = numPlayers
 	this.players = this.initalizePlayers() 
 	this.playerWithTurn = 0
-	this.rounds = 0
-	this.isGameOver = false
-	this.winner = null
 	this.score = new Array(numPlayers)
-	this.gameTime = 0
 	this.initializeLoot()
-	this.actionHandler = new ActionHandler(this.board, this.players[this.playerWithTurn], this.changeTurn.bind(this))
+	this.actionHandler = new ActionHandler(this.board, this.players[this.playerWithTurn],
+		 this.changeTurn.bind(this), this.removePLayer.bind(this))
 
 	onKey('up, W', () => this.actionHandler.handleKey('UP'))
 	onKey('left, A', () => this.actionHandler.handleKey('LEFT'))
@@ -48,6 +45,13 @@ Game.prototype.changeTurn = function() {
 	this.playerWithTurn = (this.playerWithTurn + 1) % this.numPlayers
 	this.actionHandler.reset(this.players[this.playerWithTurn])
 	this.actionHandler.handleMoves()
+}
+
+Game.prototype.removePLayer = function(index) {
+	let pos = this.players[index].pos
+	this.board.board[pos.x][pos.y].entity = null
+	this.players.splice(index, 1)
+	this.numPlayers -= 1
 }
 
 /**
@@ -77,7 +81,7 @@ Game.prototype.initalizePlayers = function () {
 		) {
 			pos = this.board.findRandomUnoccupiedTile()
 		}
-		let player = new Player(`Player ${i}`, pos)
+		let player = new Player(i, pos, this.removePLayer)
 		players.push(player)
 		board[pos.x][pos.y].entity = player
 	}
