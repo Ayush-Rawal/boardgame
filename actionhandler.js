@@ -88,7 +88,7 @@ ActionHandler.prototype.shouldActivateBattlePhase = function() {
 }
 
 /**
- * Highlight available moves to player on board
+ * Compute and highlight available moves to player on board
  */
 ActionHandler.prototype.getAvailableMoves = function () {
 	let movableTiles = []
@@ -171,9 +171,6 @@ ActionHandler.prototype.handleClick = function(pos) {
 	}
 }
 
-/**
- * Execute valid move on key press
- */
 ActionHandler.prototype.handleKey = function(direction) {
 	if(this.isInBattlePhase) {
 		let {direction: coordDirection, sign} = getDirectionCoordinates(direction)
@@ -278,6 +275,9 @@ ActionHandler.prototype.moveToPosition = function (dest) {
 	}
 }
 
+/**
+ * @param {Player} opponent - player to attack
+ */
 ActionHandler.prototype.attack = function (opponent) {
 	this.player.attack(opponent)
 	if (opponent.hp <= 0) {
@@ -305,6 +305,10 @@ ActionHandler.prototype.isValidMove = function (direction, magnitude) {
 	return this.actionableTiles.some(tilePos => tilePos.x === pos.x + playerPos.x && tilePos.y === pos.y + playerPos.y)
 }
 
+/**
+ * Return axis and sign to move on
+ * @param {enum} direction direction - Up, right, down, or left
+ */
 function getDirectionCoordinates(direction) {
 	let coordDirection = null
 	let sign = 1

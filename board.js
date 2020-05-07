@@ -68,9 +68,6 @@ Board.prototype.highlightTiles = function(tiles) {
 	}
 }
 
-/**
- * Clear highlights from tiles
- */
 Board.prototype.clearHighlights = function () {
 	this.board.forEach((row) => {
 		row.forEach((tile) => {
